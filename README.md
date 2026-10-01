@@ -14,6 +14,8 @@ and lets you rotate them, delete them and copy them to a local folder for printi
 > deletion removes it) and does not guarantee the integrity of data or metadata: do not use it
 > to acquire, analyze or preserve evidence.
 
+![PhotoExplorer main window](gui.png)
+
 ## Features
 
 - Connects to an SMB shared folder (user and password; the password can be remembered in the

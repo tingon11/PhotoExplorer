@@ -16,6 +16,8 @@ local pour l'impression.
 > l'intégrité des données ni des métadonnées : il ne doit pas être utilisé pour acquérir,
 > analyser ou conserver des preuves.
 
+![Fenêtre principale de PhotoExplorer](gui.png)
+
 ## Fonctions
 
 - Connexion à un dossier partagé SMB (utilisateur et mot de passe ; le mot de passe peut être

@@ -15,6 +15,8 @@ und erlaubt es, sie zu drehen, zu löschen und zum Drucken in einen lokalen Ordn
 > garantiert nicht die Integrität von Daten und Metadaten: Es darf nicht zur Sicherung, Analyse
 > oder Aufbewahrung von Beweismitteln verwendet werden.
 
+![Hauptfenster von PhotoExplorer](gui.png)
+
 ## Funktionen
 
 - Verbindung zu einem freigegebenen SMB-Ordner (Benutzer und Passwort; das Passwort kann in der

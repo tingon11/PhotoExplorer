@@ -14,6 +14,8 @@ girarlas, eliminarlas y copiarlas a una carpeta local para imprimirlas.
 > reescribe la foto, la eliminación la borra) y no garantiza la integridad de los datos ni de
 > los metadatos: no debe usarse para adquirir, analizar o conservar pruebas.
 
+![Ventana principal de PhotoExplorer](gui.png)
+
 ## Funciones
 
 - Conexión a una carpeta compartida SMB (usuario y contraseña; la contraseña se puede recordar

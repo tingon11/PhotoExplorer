@@ -14,6 +14,8 @@ ruotarle, eliminarle e copiarle in una cartella locale per la stampa.
 > riscrive la foto, l'eliminazione la cancella) e non garantisce l'integrità di dati e metadati:
 > non va usato per acquisire, analizzare o conservare prove.
 
+![Finestra principale di PhotoExplorer](gui.png)
+
 ## Funzioni
 
 - Connessione a una cartella condivisa SMB (utente e password; la password può essere ricordata
