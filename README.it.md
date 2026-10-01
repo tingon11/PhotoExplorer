@@ -9,6 +9,11 @@ ruotarle, eliminarle e copiarle in una cartella locale per la stampa.
 
 **Autore: Andrea Cumini — [www.osintinfo.net](https://www.osintinfo.net) — andrea@osintinfo.net**
 
+> **Nota.** PhotoExplorer non è un software forense. L'ho sviluppato per uso personale, per
+> gestire le mie foto private, e ho pensato di condividerlo. Modifica i file (la rotazione
+> riscrive la foto, l'eliminazione la cancella) e non garantisce l'integrità di dati e metadati:
+> non va usato per acquisire, analizzare o conservare prove.
+
 ## Funzioni
 
 - Connessione a una cartella condivisa SMB (utente e password; la password può essere ricordata

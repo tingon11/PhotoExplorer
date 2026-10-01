@@ -10,6 +10,12 @@ local pour l'impression.
 
 **Auteur : Andrea Cumini — [www.osintinfo.net](https://www.osintinfo.net) — andrea@osintinfo.net**
 
+> **Remarque.** PhotoExplorer n'est pas un logiciel forensique. Je l'ai développé pour mon usage
+> personnel, pour gérer mes photos privées, et j'ai décidé de le partager. Il modifie les
+> fichiers (la rotation réécrit la photo, la suppression l'efface) et ne garantit pas
+> l'intégrité des données ni des métadonnées : il ne doit pas être utilisé pour acquérir,
+> analyser ou conserver des preuves.
+
 ## Fonctions
 
 - Connexion à un dossier partagé SMB (utilisateur et mot de passe ; le mot de passe peut être

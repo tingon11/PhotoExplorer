@@ -9,6 +9,11 @@ and lets you rotate them, delete them and copy them to a local folder for printi
 
 **Author: Andrea Cumini — [www.osintinfo.net](https://www.osintinfo.net) — andrea@osintinfo.net**
 
+> **Note.** PhotoExplorer is not forensic software. I developed it for my own use, to manage my
+> private photos, and decided to share it. It modifies files (rotation rewrites the photo,
+> deletion removes it) and does not guarantee the integrity of data or metadata: do not use it
+> to acquire, analyze or preserve evidence.
+
 ## Features
 
 - Connects to an SMB shared folder (user and password; the password can be remembered in the

@@ -9,6 +9,12 @@ und erlaubt es, sie zu drehen, zu löschen und zum Drucken in einen lokalen Ordn
 
 **Autor: Andrea Cumini — [www.osintinfo.net](https://www.osintinfo.net) — andrea@osintinfo.net**
 
+> **Hinweis.** PhotoExplorer ist keine forensische Software. Ich habe es für den eigenen
+> Gebrauch entwickelt, um meine privaten Fotos zu verwalten, und mich entschieden, es zu teilen.
+> Es verändert Dateien (die Drehung schreibt das Foto neu, das Löschen entfernt es) und
+> garantiert nicht die Integrität von Daten und Metadaten: Es darf nicht zur Sicherung, Analyse
+> oder Aufbewahrung von Beweismitteln verwendet werden.
+
 ## Funktionen
 
 - Verbindung zu einem freigegebenen SMB-Ordner (Benutzer und Passwort; das Passwort kann in der
