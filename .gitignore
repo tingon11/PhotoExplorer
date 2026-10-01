@@ -1,0 +1,13 @@
+# ambiente Python e file generati
+.venv/
+__pycache__/
+*.pyc
+
+# risultato della build (l'exe non va nel repository: eventualmente si pubblica come Release)
+build/
+dist/
+*.spec
+
+# impostazioni personali dell'editor
+.idea/
+.vscode/

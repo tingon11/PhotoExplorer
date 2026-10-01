@@ -1,0 +1,5 @@
+customtkinter>=5.2
+Pillow>=11.0
+smbprotocol>=1.13
+keyring>=24
+pillow-heif>=0.18
