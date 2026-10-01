@@ -1,48 +1,51 @@
 # PhotoExplorer
 
-Visualizzatore di foto per NAS (QNAP e simili, via SMB) e per cartelle del PC, hard disk e
-chiavette USB, con interfaccia scura in customtkinter.
-Pensato per passare in rassegna grandi archivi di foto: ricorda quelle già viste, permette di
-ruotarle, eliminarle e copiarle in una cartella locale per la stampa.
+*[Versione italiana](README.it.md)*
 
-**Autore: Andrea Cumini — [www.osintinfo.net](https://www.osintinfo.net) — andrea@osintinfo.net**
+A photo viewer for NAS devices (QNAP and similar, over SMB) and for folders on a PC, hard disks
+and USB sticks, with a dark customtkinter interface.
+Built for going through large photo archives: it remembers which photos you have already viewed
+and lets you rotate them, delete them and copy them to a local folder for printing.
 
-## Funzioni
+**Author: Andrea Cumini — [www.osintinfo.net](https://www.osintinfo.net) — andrea@osintinfo.net**
 
-- Connessione a una cartella condivisa SMB (utente e password; la password può essere ricordata
-  in Gestione credenziali di Windows).
-- In alternativa, foto in una cartella del PC, di un hard disk esterno o di una chiavetta USB.
-- Elenco delle foto della cartella selezionata e di tutte le sue sottocartelle.
-- Memoria delle foto già viste, con l'opzione "Salta le foto già viste" (per i dischi locali è
-  legata al disco, non alla lettera di unità).
-- Rotazione salvata sul file (i dati EXIF vengono conservati).
-- Eliminazione con doppia conferma (sui dischi locali il file va nel Cestino).
-- Copia nella cartella per la stampa (l'originale non viene mai spostato), con data di scatto
-  opzionale in rosso in basso a destra.
-- Data di scatto e posizione GPS dai dati EXIF; un clic apre il punto su Google Maps nel browser.
-- Foto preferite: si segnano con un pulsante (o il tasto F) e si possono vedere da sole. Le foto
-  mandate in stampa diventano preferite automaticamente e sono segnate da un'icona nell'elenco.
-- Interfaccia in italiano, inglese, spagnolo, tedesco e francese, selezionabile dalla barra in alto.
-- Azzeramento completo dei dati (foto viste, preferite, stampe) con conferma.
-- Zoom con la rotella del mouse e spostamento trascinando.
-- Formati: JPG, PNG, WEBP, TIFF, BMP, GIF e HEIC (con `pillow-heif`).
+## Features
 
-## Tasti
+- Connects to an SMB shared folder (user and password; the password can be remembered in the
+  Windows Credential Manager).
+- Alternatively, browses photos in a folder on the PC, an external hard disk or a USB stick.
+- Lists the photos of the selected folder and of all its subfolders.
+- Remembers the photos already viewed, with a "Skip photos already viewed" option (for local
+  disks the memory is tied to the disk, not to the drive letter).
+- Rotation is saved to the file (EXIF data is preserved).
+- Deletion with double confirmation (on local disks the file goes to the Recycle Bin).
+- Copies photos to the print folder (the original is never moved), optionally stamping the
+  capture date in red in the bottom-right corner.
+- Shows the capture date and GPS position from the EXIF data; one click opens the location in
+  Google Maps in the browser.
+- Favorite photos: flag them with a button (or the F key) and view only those. Photos sent to
+  print become favorites automatically and are marked with an icon in the list.
+- Interface in Italian, English, Spanish, German and French, selectable from the top bar.
+- Full data reset (viewed photos, favorites, print records) with confirmation.
+- Zoom with the mouse wheel and pan by dragging.
+- Formats: JPG, PNG, WEBP, TIFF, BMP, GIF and HEIC (with `pillow-heif`).
 
-| Tasto | Azione |
+## Keys
+
+| Key | Action |
 |---|---|
-| P / L | foto successiva / precedente |
-| W / Q | ruota a destra / a sinistra |
-| D, poi C | elimina (D prepara, C conferma; Esc annulla) |
-| H | copia la foto nella cartella per la stampa |
-| F | aggiunge o toglie la foto dalle preferite |
-| Rotella / trascinamento | zoom / sposta la foto ingrandita |
+| P / L | next / previous photo |
+| W / Q | rotate right / left |
+| D, then C | delete (D arms, C confirms; Esc cancels) |
+| H | copy the photo to the print folder |
+| F | add the photo to, or remove it from, the favorites |
+| Wheel / drag | zoom / move the enlarged photo |
 
-Ogni comando ha anche il suo pulsante nell'interfaccia.
+Every command also has its own button in the interface.
 
-## Installazione
+## Installation
 
-Serve Python 3.11 o successivo su Windows.
+Requires Python 3.11 or later on Windows.
 
 ```
 python -m venv .venv
@@ -50,49 +53,49 @@ python -m venv .venv
 .venv\Scripts\python.exe main.py
 ```
 
-Per creare un unico eseguibile (`dist\PhotoExplorer.exe`) con PyInstaller:
+To build a single executable (`dist\PhotoExplorer.exe`) with PyInstaller:
 
 ```
 .venv\Scripts\python.exe build.py
 ```
 
-Impostazioni e memoria delle foto viste sono salvate in `%APPDATA%\PhotoExplorer`.
+Settings and the memory of viewed photos are stored in `%APPDATA%\PhotoExplorer`.
 
-## Traduzioni
+## Translations
 
-Nel codice i testi sono in italiano dentro `tr("…")`; le altre lingue sono in
-`photoexplorer/translations.py`. Per controllare che non manchi nulla dopo una modifica:
+In the code, texts are written in Italian inside `tr("…")`; the other languages are in
+`photoexplorer/translations.py`. To check that nothing is missing after a change:
 
 ```
-.venv\Scripts\python.exe tests	est_translations.py
+.venv\Scripts\python.exe tests\test_translations.py
 ```
 
-Per aggiungere una lingua basta aggiungerne il codice in `LANGUAGES` (`photoexplorer/i18n.py`) e le
-relative traduzioni in `translations.py`.
+To add a language, add its code to `LANGUAGES` (`photoexplorer/i18n.py`) and its translations to
+`translations.py`.
 
-## Licenza e attribuzione
+## License and attribution
 
-Copyright (C) 2026 Andrea Cumini. Software libero distribuito con licenza
-[GNU GPL versione 3](LICENSE), con i [termini aggiuntivi](ADDITIONAL_TERMS.txt) previsti
-dall'art. 7(b) della licenza. Nessuna garanzia.
+Copyright (C) 2026 Andrea Cumini. Free software released under the
+[GNU GPL version 3](LICENSE), with the [additional terms](ADDITIONAL_TERMS.txt) allowed by
+section 7(b) of the license. No warranty.
 
-In pratica: puoi usarlo, copiarlo, modificarlo e ridistribuirlo, ma ogni copia e ogni opera
-derivata deve
+In practice: you may use, copy, modify and redistribute it, but every copy and every derivative
+work must
 
-- restare sotto GPLv3, con il codice sorgente disponibile;
-- conservare in modo ben visibile, nei file sorgente e nell'interfaccia del programma,
-  l'attribuzione **Andrea Cumini — https://www.osintinfo.net — andrea@osintinfo.net**;
-- indicare chiaramente di essere una versione modificata.
+- remain under GPLv3, with the source code available;
+- keep the attribution **Andrea Cumini — https://www.osintinfo.net — andrea@osintinfo.net**
+  clearly visible, in the source files and in the program's interface;
+- clearly state that it is a modified version.
 
-## Librerie di terze parti
+## Third-party libraries
 
-Il sorgente usa, senza includerle, queste librerie (ognuna con la propria licenza):
-customtkinter (MIT), Pillow (MIT-CMU), smbprotocol e pyspnego (MIT), keyring (MIT),
+The source uses, without including them, these libraries (each under its own license):
+customtkinter (MIT), Pillow (MIT-CMU), smbprotocol and pyspnego (MIT), keyring (MIT),
 pillow-heif (BSD-3-Clause).
 
-I pacchetti binari di `pillow-heif` incorporano libheif e libde265 (LGPLv3) e x265 (GPLv2 o
-successiva), tutte licenze compatibili con la GPLv3 di questo programma. Chi distribuisce
-l'eseguibile deve quindi distribuirlo sotto GPLv3, rendendo disponibile il codice sorgente.
+The binary packages of `pillow-heif` bundle libheif and libde265 (LGPLv3) and x265 (GPLv2 or
+later), all compatible with this program's GPLv3. Anyone distributing the executable must
+therefore distribute it under GPLv3 and make the source code available.
 
-La posizione GPS viene aperta con un normale indirizzo di Google Maps nel browser dell'utente:
-il programma non scarica né incorpora mappe.
+The GPS position is opened through an ordinary Google Maps address in the user's browser: the
+program does not download or embed maps.
