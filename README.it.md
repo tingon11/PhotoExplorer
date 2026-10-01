@@ -1,6 +1,6 @@
 # PhotoExplorer
 
-*[English version](README.md)*
+[English](README.md) · **Italiano** · [Español](README.es.md) · [Deutsch](README.de.md) · [Français](README.fr.md)
 
 Visualizzatore di foto per NAS (QNAP e simili, via SMB) e per cartelle del PC, hard disk e
 chiavette USB, con interfaccia scura in customtkinter.
