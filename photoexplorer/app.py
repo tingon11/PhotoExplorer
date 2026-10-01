@@ -10,6 +10,7 @@
 from __future__ import annotations
 
 import gc
+import logging
 import os
 import re
 import shutil
@@ -17,6 +18,7 @@ import threading
 import time
 import tkinter as tk
 from collections import OrderedDict
+from logging.handlers import RotatingFileHandler
 from datetime import datetime
 from pathlib import Path
 from tkinter import filedialog, messagebox
@@ -35,7 +37,7 @@ from .imaging import (LoadedImage, RotationNotSupported, View, decode_for_displa
                       read_meta_from_bytes, render_image_bytes, render_view, rotate_cw, rotate_image_bytes,
                       stamp_date)
 from .smb import RemoteFile, SmbBrowser, SmbConfig, describe_error, join, normalize, parent
-from .storage import APP_DIR, History, Settings, default_print_dir, folder_key
+from .storage import APP_DIR, LOG_FILE, History, Settings, default_print_dir, folder_key
 from .worker import HIGH, LOW, Worker
 
 # --- colori -----------------------------------------------------------------
@@ -57,8 +59,28 @@ STATUS_COLORS = {"info": "#c8c8c8", "ok": "#5fd08f", "warn": "#f0b85a", "error":
 ROTATION_SAVE_DELAY_MS = 1200
 CACHE_SIZE = 10
 PREFETCH_AHEAD = 3
+POLL_MS = 10            # ogni quanto la GUI raccoglie i risultati del thread di rete
 ZOOM_STEP = 1.25        # ingrandimento per ogni scatto della rotella
 DRAG_THRESHOLD = 5      # pixel di movimento oltre i quali un clic diventa un trascinamento
+
+
+log = logging.getLogger("photoexplorer")
+SLOW_LOAD_SECONDS = 3.0   # oltre questo tempo l'apertura di una foto viene annotata nel registro
+
+
+def setup_logging() -> None:
+    """Registro su file (piccolo, a rotazione) di errori e foto lente: nell'exe non c'è un
+    terminale, quindi senza questo file un errore resterebbe invisibile."""
+    if log.handlers:
+        return
+    try:
+        APP_DIR.mkdir(parents=True, exist_ok=True)
+        handler = RotatingFileHandler(LOG_FILE, maxBytes=300_000, backupCount=1, encoding="utf-8")
+    except OSError:
+        return
+    handler.setFormatter(logging.Formatter("%(asctime)s %(levelname)s %(message)s"))
+    log.addHandler(handler)
+    log.setLevel(logging.INFO)
 
 
 def natural_key(name: str):
@@ -142,6 +164,7 @@ class PhotoExplorerApp(ctk.CTk):
         # se il garbage collector partisse nel thread di rete, Tk resterebbe bloccato.
         # Per questo la raccolta automatica è disattivata e viene eseguita qui periodicamente.
         gc.disable()
+        setup_logging()
         self._gc_job = self.after(2000, self._collect_garbage)
         self.settings = Settings.load()
         set_language(self.settings.language)   # vuota = lingua del sistema
@@ -155,6 +178,7 @@ class PhotoExplorerApp(ctk.CTk):
         self.folder = ""               # cartella corrente, relativa alla condivisione
         self.dirs: list[str] = []
         self.photos: list[RemoteFile] = []
+        self._to_view = 0              # foto dell'elenco non ancora viste
         self.index = -1
 
         # ricerca delle foto nelle sottocartelle
@@ -209,7 +233,7 @@ class PhotoExplorerApp(ctk.CTk):
         self._build_ui()
         self._bind_keys()
         self.protocol("WM_DELETE_WINDOW", self.on_close)
-        self._poll_job = self.after(30, self._poll_worker)
+        self._poll_job = self.after(POLL_MS, self._poll_worker)
         self._autosave_job = self.after(5000, self._autosave)
         self.after(300, self._startup)
 
@@ -458,7 +482,7 @@ class PhotoExplorerApp(ctk.CTk):
             self.worker.process_results()
             self.decoder.process_results()
         finally:
-            self._poll_job = self.after(30, self._poll_worker)
+            self._poll_job = self.after(POLL_MS, self._poll_worker)
 
     def _collect_garbage(self) -> None:
         gc.collect()
@@ -628,6 +652,7 @@ class PhotoExplorerApp(ctk.CTk):
             self.folder = rel
             self.dirs = sorted(dirs, key=natural_key)
             self.photos = []
+            self._to_view = 0
             self.index = -1
             self.view_rotation = 0
             self.wanted = frozenset()
@@ -753,16 +778,18 @@ class PhotoExplorerApp(ctk.CTk):
                 self.photos.extend(files)
                 for i in range(start, len(self.photos)):
                     self._insert_photo_row(i)
+                # si contano solo le foto nuove: ricontarle tutte a ogni aggiunta rallenta gli archivi grandi
+                self._to_view += sum(not self.is_viewed(f) for f in files)
             else:
                 current = self.current_photo()
                 self.photos.extend(files)
                 self._sort_photos()
-                self._fill_photo_list()
+                self._fill_photo_list()        # qui il conteggio viene rifatto per intero
                 if current is not None:
                     self.index = next(i for i, p in enumerate(self.photos) if p is current)
                     self._select_in_list(self.index)
                     self.update_info()
-        self._update_photo_header()
+        self._update_photo_header(recount=False)
         if self.index == -1 and self.photos:
             self._start_viewing()
 
@@ -893,15 +920,18 @@ class PhotoExplorerApp(ctk.CTk):
         if selected:
             lb.selection_set(i)
 
-    def _update_photo_header(self) -> None:
+    def _update_photo_header(self, recount: bool = True) -> None:
+        """Intestazione dell'elenco. ``recount=False`` usa il numero di foto da vedere già noto
+        (aggiornato a ogni foto vista o aggiunta) invece di ricontare tutto l'elenco."""
         searching = tr("  · ricerca…") if self._scanning else ""
         if self.fav_only_var.get():
             self.photo_header.configure(text=tr("Preferite  ({count}){searching}",
                                                 count=len(self.photos), searching=searching))
             return
-        new = sum(not self.is_viewed(p) for p in self.photos)
+        if recount:
+            self._to_view = sum(not self.is_viewed(p) for p in self.photos)
         self.photo_header.configure(text=tr("Foto  ({count}, {new} da vedere){searching}",
-                                            count=len(self.photos), new=new, searching=searching))
+                                            count=len(self.photos), new=self._to_view, searching=searching))
 
     def open_selected_dir(self) -> None:
         sel = self.dir_list.curselection()
@@ -1072,9 +1102,8 @@ class PhotoExplorerApp(ctk.CTk):
 
         item = self.cache.get(photo.path)
         if item is not None:
-            self._canvas_message = None
-            self.render()
-            self._mark_viewed(i)
+            if self._display_current():
+                self._mark_viewed(i)
         else:
             self.show_message(tr("Caricamento…"))
             self.load(photo, HIGH)
@@ -1097,10 +1126,20 @@ class PhotoExplorerApp(ctk.CTk):
         self.loading.add(path)
         browser, session, max_side = self.source, self.session, self.max_side
 
+        queued = time.perf_counter()
+
         def task():
             if path not in self.wanted:   # l'utente è già andato oltre
                 return None
-            return decode_for_display(browser.read_bytes(path), max_side)
+            started = time.perf_counter()
+            raw = browser.read_bytes(path)
+            read = time.perf_counter()
+            item = decode_for_display(raw, max_side)
+            total = time.perf_counter() - queued
+            if total > SLOW_LOAD_SECONDS:
+                log.info("Foto lenta (%.1f s): %s - in coda %.1f s, lettura %.1f s (%d KB), decodifica %.1f s",
+                         total, path, started - queued, read - started, len(raw) // 1024, time.perf_counter() - read)
+            return item
 
         def done(item: LoadedImage | None):
             self.loading.discard(path)
@@ -1115,24 +1154,44 @@ class PhotoExplorerApp(ctk.CTk):
                 return
             self.cache.put(path, item)
             if current is not None and current.path == path:
-                self._canvas_message = None
-                self.render()
-                self._mark_viewed(self.index)
+                if self._display_current():
+                    self._mark_viewed(self.index)
                 self.update_info()
 
         def error(exc: BaseException):
             self.loading.discard(path)
             current = self.current_photo()
+            log.warning("Impossibile aprire %s: %s: %s", path, type(exc).__name__, exc)
             if session == self.session and current is not None and current.path == path:
                 self.show_message(tr("Impossibile aprire la foto\n\n{error}", error=describe_error(exc)), error=True)
 
         self.worker.submit(task, done, error, priority)
 
+    def _display_current(self) -> bool:
+        """Disegna la foto corrente. Se il disegno fallisce mostra l'errore (e lo registra)
+        invece di lasciare la scritta di caricamento; restituisce True se la foto è visibile."""
+        try:
+            self._canvas_message = None
+            self.render()
+            return True
+        except Exception as exc:
+            photo = self.current_photo()
+            log.exception("Impossibile mostrare %s", photo.path if photo else "?")
+            self.show_message(tr("Impossibile mostrare la foto\n\n{error}", error=f"{type(exc).__name__}: {exc}"),
+                              error=True)
+            return False
+
+    def report_callback_exception(self, exc, val, tb) -> None:
+        """Errori imprevisti dell'interfaccia: finiscono nel registro, oltre che nel terminale."""
+        log.error("Errore imprevisto nell'interfaccia", exc_info=(exc, val, tb))
+        super().report_callback_exception(exc, val, tb)
+
     def _mark_viewed(self, i: int) -> None:
         photo = self.photos[i]
         if self.history.mark_viewed(self.pkey(photo), photo.name):
             self._refresh_photo_row(i)
-            self._update_photo_header()
+            self._to_view = max(0, self._to_view - 1)
+            self._update_photo_header(recount=False)
 
     def update_info(self) -> None:
         photo = self.current_photo()
@@ -1718,6 +1777,7 @@ class PhotoExplorerApp(ctk.CTk):
                                  language=self.settings.language)
         self._save_settings()
         self.folder, self.dirs, self.photos, self.index = "", [], [], -1
+        self._to_view = 0
         self._scanning = False
         self._reset_view()
         self._rebuild_ui()

@@ -18,6 +18,7 @@ APP_NAME = "PhotoExplorer"
 APP_DIR = Path(os.environ.get("APPDATA") or Path.home()) / APP_NAME
 SETTINGS_FILE = APP_DIR / "settings.json"
 HISTORY_FILE = APP_DIR / "history.json"
+LOG_FILE = APP_DIR / "photoexplorer.log"   # registro di errori e foto lente
 
 
 def default_print_dir() -> str:

@@ -286,14 +286,22 @@ def render_view(src: Image.Image, full_size: tuple[int, int], box: tuple[int, in
     y0, y1 = max(0.0, cy - half_h), min(float(fh), cy + half_h)
     out = (max(1, round((x1 - x0) * scale)), max(1, round((y1 - y0) * scale)))
 
-    k = src.width / fw   # src può essere una versione ridotta della foto
-    ratio = scale / k    # pixel dello schermo per ogni pixel di src
+    # src può essere una versione ridotta della foto. Le due scale vanno calcolate separatamente:
+    # l'anteprima ha dimensioni intere, quindi le sue proporzioni non sono esattamente quelle
+    # dell'originale (es. 3872x2592 -> 1920x1285) e con una scala sola il ritaglio uscirebbe dai bordi.
+    kx, ky = src.width / fw, src.height / fh
+    ratio = scale / kx   # pixel dello schermo per ogni pixel di src
     if fast:             # durante rotella e trascinamento: veloce, poi si ridisegna in alta qualità
         resample, gap = (Image.Resampling.BILINEAR if ratio < 1 else Image.Resampling.NEAREST), None
     else:
         resample = Image.Resampling.LANCZOS if ratio < 1 else Image.Resampling.BICUBIC
         gap = 3.0 if ratio < 0.5 else None
-    image = src.resize(out, resample, box=(x0 * k, y0 * k, x1 * k, y1 * k), reducing_gap=gap)
+    left, top = max(0.0, x0 * kx), max(0.0, y0 * ky)
+    right, bottom = min(float(src.width), x1 * kx), min(float(src.height), y1 * ky)
+    if right - left < 1 or bottom - top < 1:      # zona minuscola: almeno un pixel di sorgente
+        right, bottom = min(float(src.width), left + 1), min(float(src.height), top + 1)
+        left, top = max(0.0, right - 1), max(0.0, bottom - 1)
+    image = src.resize(out, resample, box=(left, top, right, bottom), reducing_gap=gap)
     return View(image, zoom, max_zoom, scale, (cx, cy), (x0, y0), ((bw - out[0]) / 2, (bh - out[1]) / 2))
 
 

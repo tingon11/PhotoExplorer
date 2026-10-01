@@ -15,6 +15,7 @@ consegnati al thread della GUI tramite una coda letta con ``after()``.
 from __future__ import annotations
 
 import itertools
+import logging
 import queue
 import threading
 from typing import Any, Callable
@@ -71,7 +72,10 @@ class Worker:
             except queue.Empty:
                 return
             if callback is not None:
-                callback(value)
+                try:
+                    callback(value)
+                except Exception:   # un errore in una risposta non deve bloccare le successive
+                    logging.getLogger("photoexplorer").exception("Errore nell'elaborazione di un risultato")
 
     def stop(self) -> None:
         self._tasks.put((-1, -1, None, None, None, False))

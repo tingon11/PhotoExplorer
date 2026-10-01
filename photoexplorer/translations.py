@@ -243,6 +243,9 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
     "Impossibile aprire la foto\n\n{error}": {
         "en": "Cannot open the photo\n\n{error}", "es": "No se puede abrir la foto\n\n{error}",
         "de": "Das Foto kann nicht geöffnet werden\n\n{error}", "fr": "Impossible d'ouvrir la photo\n\n{error}"},
+    "Impossibile mostrare la foto\n\n{error}": {
+        "en": "Cannot display the photo\n\n{error}", "es": "No se puede mostrar la foto\n\n{error}",
+        "de": "Das Foto kann nicht angezeigt werden\n\n{error}", "fr": "Impossible d'afficher la photo\n\n{error}"},
     "Attendi che la foto compaia, così non ne salti nessuna. Per saltarla apposta scegli un'altra foto dall'elenco.": {
         "en": "Wait for the photo to appear, so you don't skip any. To skip it on purpose, pick another photo from "
               "the list.",
