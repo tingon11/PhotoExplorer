@@ -50,9 +50,17 @@ and lets you rotate them, delete them and copy them to a local folder for printi
 
 Every command also has its own button in the interface.
 
+## Download
+
+Ready-to-use program for Windows 10/11 (64-bit), Python not needed: download
+`PhotoExplorer-<version>-windows-x64.zip` from the [Releases](https://github.com/tingon11/PhotoExplorer/releases) page, unzip it and run
+`PhotoExplorer.exe`. At the first start it asks for the interface language and shows a
+disclaimer to accept. The executable is not signed, so Windows SmartScreen may show a warning
+the first time.
+
 ## Installation
 
-Requires Python 3.11 or later on Windows.
+To run it from the source code you need Python 3.11 or later on Windows.
 
 ```
 python -m venv .venv
@@ -64,6 +72,13 @@ To build a single executable (`dist\PhotoExplorer.exe`) with PyInstaller:
 
 ```
 .venv\Scripts\python.exe build.py
+```
+
+With `--release` it also creates, in `dist`, the release zip and the release notes with the
+zip's SHA-256 fingerprint (taken from the most recent section of [CHANGELOG.md](CHANGELOG.md)):
+
+```
+.venv\Scripts\python.exe build.py --release
 ```
 
 Settings and the memory of viewed photos are stored in `%APPDATA%\PhotoExplorer`.
@@ -103,6 +118,9 @@ pillow-heif (BSD-3-Clause).
 The binary packages of `pillow-heif` bundle libheif and libde265 (LGPLv3) and x265 (GPLv2 or
 later), all compatible with this program's GPLv3. Anyone distributing the executable must
 therefore distribute it under GPLv3 and make the source code available.
+
+The executable includes the license texts of all bundled components in
+`THIRD_PARTY_LICENSES.txt` (shown in the About window and shipped in the release zip).
 
 The GPS position is opened through an ordinary Google Maps address in the user's browser: the
 program does not download or embed maps.

@@ -54,9 +54,17 @@ und erlaubt es, sie zu drehen, zu löschen und zum Drucken in einen lokalen Ordn
 
 Jeder Befehl hat auch eine eigene Schaltfläche in der Oberfläche.
 
+## Download
+
+Fertiges Programm für Windows 10/11 (64 Bit), Python ist nicht nötig: Laden Sie
+`PhotoExplorer-<Version>-windows-x64.zip` von der Seite [Releases](https://github.com/tingon11/PhotoExplorer/releases) herunter, entpacken
+Sie es und starten Sie `PhotoExplorer.exe`. Beim ersten Start fragt das Programm nach der Sprache
+der Oberfläche und zeigt Hinweise, die akzeptiert werden müssen. Die ausführbare Datei ist nicht
+signiert, daher kann Windows SmartScreen beim ersten Mal eine Warnung anzeigen.
+
 ## Installation
 
-Benötigt Python 3.11 oder neuer unter Windows.
+Um es aus dem Quellcode zu starten, wird Python 3.11 oder neuer unter Windows benötigt.
 
 ```
 python -m venv .venv
@@ -68,6 +76,13 @@ Eine einzelne ausführbare Datei (`dist\PhotoExplorer.exe`) mit PyInstaller erst
 
 ```
 .venv\Scripts\python.exe build.py
+```
+
+Mit `--release` werden in `dist` außerdem das Release-Zip und die Release-Notes mit dem
+SHA-256-Fingerabdruck des Zips erstellt (aus dem neuesten Abschnitt von [CHANGELOG.md](CHANGELOG.md)):
+
+```
+.venv\Scripts\python.exe build.py --release
 ```
 
 Einstellungen und die Liste der angesehenen Fotos werden in `%APPDATA%\PhotoExplorer`
@@ -108,6 +123,9 @@ pillow-heif (BSD-3-Clause).
 Die Binärpakete von `pillow-heif` enthalten libheif und libde265 (LGPLv3) sowie x265 (GPLv2 oder
 neuer), alles Lizenzen, die mit der GPLv3 dieses Programms vereinbar sind. Wer die ausführbare
 Datei weitergibt, muss sie daher unter der GPLv3 weitergeben und den Quellcode verfügbar machen.
+
+Die ausführbare Datei enthält die Lizenztexte aller enthaltenen Komponenten in
+`THIRD_PARTY_LICENSES.txt` (im Fenster „Über PhotoExplorer“ sichtbar und im Release-Zip enthalten).
 
 Die GPS-Position wird über eine gewöhnliche Google-Maps-Adresse im Browser des Benutzers
 geöffnet: Das Programm lädt keine Karten herunter und bindet keine ein.

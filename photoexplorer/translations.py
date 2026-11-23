@@ -483,6 +483,82 @@ TRANSLATIONS: dict[str, dict[str, str]] = {
     "Annulla": {"en": "Cancel", "es": "Cancelar", "de": "Abbrechen", "fr": "Annuler"},
     "Chiudi": {"en": "Close", "es": "Cerrar", "de": "Schließen", "fr": "Fermer"},
 
+    # --- avvertenze (primo avvio) ---------------------------------------------------------
+    "Avvertenze": {"en": "Disclaimer", "es": "Avisos", "de": "Hinweise", "fr": "Avertissements"},
+    "Avvertenze e limitazione di responsabilità": {
+        "en": "Disclaimer and limitation of liability", "es": "Avisos y limitación de responsabilidad",
+        "de": "Hinweise und Haftungsbeschränkung", "fr": "Avertissements et limitation de responsabilité"},
+    "Proseguendo dichiari di aver letto e accettato queste condizioni.": {
+        "en": "By continuing you declare that you have read and accepted these terms.",
+        "es": "Al continuar declaras que has leído y aceptado estas condiciones.",
+        "de": "Mit dem Fortfahren erklären Sie, diese Bedingungen gelesen und akzeptiert zu haben.",
+        "fr": "En continuant, vous déclarez avoir lu et accepté ces conditions."},
+    "Accetto": {"en": "I accept", "es": "Acepto", "de": "Ich akzeptiere", "fr": "J'accepte"},
+    "Non accetto ed esco": {
+        "en": "I do not accept, exit", "es": "No acepto, salir", "de": "Ablehnen und beenden", "fr": "Refuser et quitter"},
+    "PhotoExplorer è un programma gratuito, sviluppato per uso personale e condiviso così com'è.\n\n"
+    "•  È fornito SENZA ALCUNA GARANZIA, espressa o implicita, come previsto dalla licenza GNU GPL versione 3 "
+    "(articoli 15 e 16).\n"
+    "•  Il programma modifica e cancella file: la rotazione riscrive le foto e l'eliminazione le rimuove, dal NAS "
+    "in modo definitivo. Fai sempre una copia di sicurezza delle foto a cui tieni.\n"
+    "•  Nei limiti massimi consentiti dalla legge, l'autore non risponde di perdite o danni a dati, foto, "
+    "dispositivi o sistemi, né di qualsiasi altro danno, diretto o indiretto, derivante dall'uso o "
+    "dall'impossibilità di usare il programma.\n"
+    "•  Non è un software forense: non garantisce l'integrità di dati e metadati e non va usato per acquisire, "
+    "analizzare o conservare prove.\n"
+    "•  Chi lo usa è il solo responsabile del rispetto delle leggi, della privacy e dei diritti sulle foto che "
+    "gestisce.": {
+        "en": "PhotoExplorer is a free program, developed for personal use and shared as it is.\n\n"
+              "•  It is provided WITHOUT ANY WARRANTY, express or implied, as stated in the GNU GPL version 3 "
+              "license (sections 15 and 16).\n"
+              "•  The program modifies and deletes files: rotation rewrites photos and deletion removes them, "
+              "permanently on the NAS. Always keep a backup copy of the photos you care about.\n"
+              "•  To the maximum extent permitted by law, the author is not liable for any loss of or damage to "
+              "data, photos, devices or systems, nor for any other damage, direct or indirect, arising from the "
+              "use of or inability to use the program.\n"
+              "•  It is not forensic software: it does not guarantee the integrity of data and metadata and must "
+              "not be used to acquire, analyze or preserve evidence.\n"
+              "•  Users are solely responsible for complying with the law, privacy and the rights in the photos "
+              "they manage.",
+        "es": "PhotoExplorer es un programa gratuito, desarrollado para uso personal y compartido tal cual.\n\n"
+              "•  Se proporciona SIN NINGUNA GARANTÍA, expresa o implícita, según lo previsto en la licencia GNU "
+              "GPL versión 3 (artículos 15 y 16).\n"
+              "•  El programa modifica y elimina archivos: la rotación reescribe las fotos y la eliminación las "
+              "borra, del NAS de forma definitiva. Haz siempre una copia de seguridad de las fotos que te importan.\n"
+              "•  En la máxima medida permitida por la ley, el autor no responde de pérdidas o daños de datos, "
+              "fotos, dispositivos o sistemas, ni de ningún otro daño, directo o indirecto, derivado del uso o de la "
+              "imposibilidad de usar el programa.\n"
+              "•  No es un software forense: no garantiza la integridad de los datos ni de los metadatos y no debe "
+              "usarse para adquirir, analizar o conservar pruebas.\n"
+              "•  Quien lo usa es el único responsable de respetar la ley, la privacidad y los derechos sobre las "
+              "fotos que gestiona.",
+        "de": "PhotoExplorer ist ein kostenloses Programm, für den persönlichen Gebrauch entwickelt und so "
+              "geteilt, wie es ist.\n\n"
+              "•  Es wird OHNE JEDE GEWÄHRLEISTUNG bereitgestellt, weder ausdrücklich noch stillschweigend, wie in "
+              "der Lizenz GNU GPL Version 3 vorgesehen (Abschnitte 15 und 16).\n"
+              "•  Das Programm verändert und löscht Dateien: Die Drehung schreibt Fotos neu, das Löschen entfernt "
+              "sie, vom NAS endgültig. Erstellen Sie immer eine Sicherungskopie der Fotos, die Ihnen wichtig sind.\n"
+              "•  Soweit gesetzlich zulässig, haftet der Autor nicht für Verlust oder Beschädigung von Daten, Fotos, "
+              "Geräten oder Systemen und auch nicht für sonstige direkte oder indirekte Schäden, die aus der Nutzung "
+              "oder der Unmöglichkeit der Nutzung des Programms entstehen.\n"
+              "•  Es ist keine forensische Software: Es garantiert nicht die Integrität von Daten und Metadaten und "
+              "darf nicht zur Sicherung, Analyse oder Aufbewahrung von Beweismitteln verwendet werden.\n"
+              "•  Wer es verwendet, ist allein dafür verantwortlich, die Gesetze, den Datenschutz und die Rechte an "
+              "den verwalteten Fotos zu beachten.",
+        "fr": "PhotoExplorer est un programme gratuit, développé pour un usage personnel et partagé tel quel.\n\n"
+              "•  Il est fourni SANS AUCUNE GARANTIE, expresse ou implicite, comme le prévoit la licence GNU GPL "
+              "version 3 (articles 15 et 16).\n"
+              "•  Le programme modifie et supprime des fichiers : la rotation réécrit les photos et la suppression "
+              "les efface, du NAS de façon définitive. Faites toujours une copie de sauvegarde des photos auxquelles "
+              "vous tenez.\n"
+              "•  Dans toute la mesure permise par la loi, l'auteur n'est pas responsable des pertes ou dommages "
+              "subis par des données, photos, appareils ou systèmes, ni de tout autre dommage, direct ou indirect, "
+              "résultant de l'utilisation ou de l'impossibilité d'utiliser le programme.\n"
+              "•  Ce n'est pas un logiciel forensique : il ne garantit pas l'intégrité des données et des "
+              "métadonnées et ne doit pas être utilisé pour acquérir, analyser ou conserver des preuves.\n"
+              "•  L'utilisateur est seul responsable du respect de la loi, de la vie privée et des droits sur les "
+              "photos qu'il gère."},
+
     # --- finestra Informazioni -------------------------------------------------------------
     "Informazioni su PhotoExplorer": {
         "en": "About PhotoExplorer", "es": "Acerca de PhotoExplorer", "de": "Über PhotoExplorer",

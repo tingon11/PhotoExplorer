@@ -8,7 +8,7 @@
 # SPDX-License-Identifier: GPL-3.0-only
 """PhotoExplorer: visualizzatore di foto su NAS QNAP via SMB."""
 
-__version__ = "1.0.0"
+__version__ = "1.0.3"
 __author__ = "Andrea Cumini"
 __url__ = "https://www.osintinfo.net"
 __email__ = "andrea@osintinfo.net"

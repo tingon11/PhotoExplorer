@@ -28,9 +28,10 @@ from PIL import ImageTk
 
 from . import __author__, __url__
 from .about import AboutDialog, ResetDialog
+from .welcome import DISCLAIMER_VERSION, DisclaimerDialog, LanguageDialog
 from .connection_dialog import ConnectionDialog, load_saved_password, store_password
 from .i18n import LANGUAGES, get_language, set_language, tr, weekday_name
-from .icons import app_icon_path, icon
+from .icons import app_icon_path, icon, logo_label
 from .mapview import WINDOW_SIZE, find_map_window, format_coords, open_google_maps, place_window
 from .local import LocalBrowser
 from .imaging import (LoadedImage, RotationNotSupported, View, decode_for_display, decode_full, format_stamp,
@@ -250,7 +251,7 @@ class PhotoExplorerApp(ctk.CTk):
         top.grid(row=0, column=0, columnspan=2, sticky="ew")
         title = ctk.CTkFrame(top, fg_color="transparent")
         title.pack(side="left", padx=(16, 18), pady=(6, 4))
-        ctk.CTkLabel(title, text="PhotoExplorer", font=ctk.CTkFont(size=20, weight="bold"), height=24).pack(anchor="w")
+        logo_label(title, 20, 20).pack(anchor="w", pady=(2, 4))
         # Attribuzione dell'autore: va conservata, ben visibile, anche nelle versioni modificate
         # (termini aggiuntivi della licenza, GPLv3 art. 7(b): vedi ADDITIONAL_TERMS.txt).
         # Un clic apre la finestra "Informazioni" con copyright, licenza e assenza di garanzia.
@@ -499,7 +500,33 @@ class PhotoExplorerApp(ctk.CTk):
     # Connessione
     # =====================================================================
     def _startup(self) -> None:
-        """All'avvio riapre l'ultima sorgente usata: cartella locale oppure NAS."""
+        """Avvio: prima la scelta della lingua (se non è mai stata fatta), poi le avvertenze
+        (se non sono ancora state accettate), infine la riapertura dell'ultima sorgente."""
+        if not self.settings.language:
+            LanguageDialog(self, on_choose=self._first_language_chosen)
+        elif self.settings.disclaimer_accepted != DISCLAIMER_VERSION:
+            DisclaimerDialog(self, on_accept=self._disclaimer_accepted, on_decline=self.on_close)
+        else:
+            self._open_last_source()
+
+    def _first_language_chosen(self, code: str) -> None:
+        self.settings.language = code
+        self._save_settings()
+        set_language(code)
+        self.change_language()   # l'interfaccia, già visibile dietro, passa alla lingua scelta
+        self._startup()
+
+    def _disclaimer_accepted(self) -> None:
+        self.settings.disclaimer_accepted = DISCLAIMER_VERSION
+        self._save_settings()
+        self._startup()
+
+    def show_disclaimer(self) -> None:
+        """Rilettura delle avvertenze (dalla finestra Informazioni)."""
+        DisclaimerDialog(self)
+
+    def _open_last_source(self) -> None:
+        """Riapre l'ultima sorgente usata: cartella locale oppure NAS."""
         s = self.settings
         if s.last_source == "local" and s.local_root and os.path.isdir(s.local_root):
             self.open_local(s.local_root, resume=True)
@@ -1774,7 +1801,8 @@ class PhotoExplorerApp(ctk.CTk):
         if old is not None:
             self.worker.submit(old.close, priority=LOW)
         self.settings = Settings(print_dir=default_print_dir(), geometry=self.settings.geometry,
-                                 language=self.settings.language)
+                                 language=self.settings.language,
+                                 disclaimer_accepted=self.settings.disclaimer_accepted)
         self._save_settings()
         self.folder, self.dirs, self.photos, self.index = "", [], [], -1
         self._to_view = 0

@@ -20,7 +20,7 @@ import customtkinter as ctk
 
 from . import __author__, __email__, __url__, __version__
 from .i18n import tr
-from .icons import app_icon_path, resource_path
+from .icons import app_icon_path, logo_label, resource_path
 
 COPYRIGHT = f"Copyright © 2026 {__author__}"
 LICENSE_URL = "https://www.gnu.org/licenses/gpl-3.0.html"
@@ -37,7 +37,7 @@ def _summary() -> str:
 
 def _license_text() -> str:
     parts = []
-    for name in ("ADDITIONAL_TERMS.txt", "LICENSE"):
+    for name in ("ADDITIONAL_TERMS.txt", "LICENSE", "THIRD_PARTY_LICENSES.txt"):   # l'ultimo solo nell'exe
         try:
             parts.append(resource_path(name).read_text(encoding="utf-8"))
         except OSError:
@@ -60,8 +60,10 @@ class AboutDialog(ctk.CTkToplevel):
         frm = ctk.CTkFrame(self)
         frm.pack(fill="both", expand=True, padx=16, pady=16)
 
-        ctk.CTkLabel(frm, text=f"PhotoExplorer  {__version__}", font=ctk.CTkFont(size=20, weight="bold")).pack(
-            anchor="w", padx=14, pady=(12, 0))
+        brand = ctk.CTkFrame(frm, fg_color="transparent")
+        brand.pack(anchor="w", padx=14, pady=(14, 4))
+        logo_label(brand, 20, 20).pack(side="left")
+        ctk.CTkLabel(brand, text=f"   v{__version__}", text_color="gray60").pack(side="left", pady=(3, 0))
         ctk.CTkLabel(frm, text=COPYRIGHT, font=ctk.CTkFont(size=14, weight="bold")).pack(anchor="w", padx=14)
 
         links = ctk.CTkFrame(frm, fg_color="transparent")
@@ -78,7 +80,11 @@ class AboutDialog(ctk.CTkToplevel):
         box.insert("1.0", _license_text())
         box.configure(state="disabled")
 
-        ctk.CTkButton(frm, text=tr("Chiudi"), width=120, command=self.destroy).pack(anchor="e", padx=14, pady=(0, 12))
+        btns = ctk.CTkFrame(frm, fg_color="transparent")
+        btns.pack(fill="x", padx=14, pady=(0, 12))
+        ctk.CTkButton(btns, text=tr("Chiudi"), width=120, command=self.destroy).pack(side="right")
+        ctk.CTkButton(btns, text=tr("Avvertenze"), width=140, fg_color="gray30", hover_color="gray25",
+                      command=master.show_disclaimer).pack(side="right", padx=(0, 8))
 
         self.bind("<Escape>", lambda _e: self.destroy())
         self.after(150, self._focus)

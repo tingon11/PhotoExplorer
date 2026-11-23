@@ -56,7 +56,8 @@ class Settings:
     include_subfolders: bool = True
     stamp_date: bool = False
     sort_by: str = "name"      # "name" oppure "date"
-    language: str = ""         # codice della lingua ("it", "en"…); vuoto = lingua del sistema
+    language: str = ""         # codice della lingua ("it", "en"…); vuoto = non ancora scelta
+    disclaimer_accepted: str = ""   # versione delle avvertenze accettata al primo avvio
     last_folder: str = ""
     last_location: str = ""  # sorgente (NAS o cartella locale) a cui si riferisce last_folder
     last_source: str = "smb"  # "smb" = NAS, "local" = cartella del PC / disco / chiavetta

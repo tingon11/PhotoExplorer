@@ -59,6 +59,25 @@ def app_icon_path() -> str | None:
 
 
 @lru_cache(maxsize=None)
+def logo(height: int) -> ctk.CTkImage | None:
+    """La scritta "PhotoExplorer" bicolore (tools/make_logo.py), alta `height` punti; None se manca."""
+    try:
+        image = Image.open(resource_path("assets", "logo.png")).convert("RGBA")
+    except OSError:
+        return None
+    return ctk.CTkImage(light_image=image, dark_image=image,
+                        size=(round(image.width * height / image.height), height))
+
+
+def logo_label(master, height: int, fallback_size: int) -> ctk.CTkLabel:
+    """Etichetta con il logo; se il file manca, la scritta in grassetto."""
+    image = logo(height)
+    if image is not None:
+        return ctk.CTkLabel(master, text="", image=image, height=height)
+    return ctk.CTkLabel(master, text="PhotoExplorer", font=ctk.CTkFont(size=fallback_size, weight="bold"))
+
+
+@lru_cache(maxsize=None)
 def _font_path() -> str | None:
     return next((str(p) for p in _FONT_FILES if p.exists()), None)
 
